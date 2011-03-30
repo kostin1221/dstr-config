@@ -6,6 +6,10 @@ Xcursor.theme: neutral
 URxvt*font: xft:liberation mono:size=9
 URxvt*boldFont: xft:liberation mono:size=9
 
+URxvt.perl-ext-common:  default,url-select
+URxvt.keysym.M-u:       perl:url-select:select_next
+URxvt.urlLauncher:      firefox
+URxvt.underlineURLs:    true
 
 !URxvt*geometry: 142x71
 URxvt.urgentOnBell: True

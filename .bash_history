@@ -68,3 +68,48 @@ startx
 pacman -Ss wm
 pacman -Ss wm
 startx
+cat ~/.ssh/id_rsa.pub 
+yaourt -Ss xdg
+xdg-mime 
+xdg-mime --manual
+ls
+ls .local/share/applications/mimeapps.list 
+cat .local/share/applications/mimeapps.list 
+sudo /etc/rc.d/cups start
+aunpack Linux_PPDs_KSL8_4.zip
+cat ~/.xinitrc 
+nano -w ~/.xinitrc 
+yaourt -S fusesmb
+exit
+yaourt -S psi-plus
+wget http://code.google.com/p/psi-dev/downloads/detail?name=psi-plus-0.15.3468-archlinux-i686.pkg.tar.xz&can=2&q=ArchLinux
+ssh-keygen 
+ssh-copy-id dimon@dimon.baltech.ru
+ssh-copy-id dimon@192.168.10.2
+ssh-copy-id dimon@192.168.10.26
+ssh-copy-id dimon@dimon.baltech.ru
+ssh dimon@dimon.baltech.ru
+echo $LANG
+ssh dimon@dimon.baltech.ru
+yaourt -U ~/psi-plus-0.15.3468-archlinux-i686.pkg.tar.xz 
+yaourt -Ss awesome
+yaourt -S awesome aur/vicious-git aur/shifty-git aur/amazing-git
+yaourt -Ss flash
+yaourt -S flashplugin  alsa-utils
+yaourt -Ss Rhabarber
+yaourt -S aur/gtk-theme-rhabarbermarmelade
+yaourt -Ss switch2
+yaourt -S gtk-theme-switch2
+switch_root 
+gtk-theme-switch2 
+qtconfig 
+qtconfig 
+  git commit -m 'Initial commit'
+git init
+  git pull git@github.com:DsTr/dstr-config.git
+git remote add origin git@github.com:DsTr/dstr-config.git
+cat .vimrc 
+yaourt -S zsh
+sudo nano -w /etc/passwd
+whereis zsh
+zsh
