@@ -442,11 +442,11 @@ inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
 vnoremap <C-P> :call PhpDocRange()<CR> 
 
-autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="help"
+autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="$HOME/.vim/external/phpmanual.sh"
 
 setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
 setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
 setlocal dictionary+=$HOME/.vim/phpdic/phpproto
 
-set runtimepath+=$HOME/.vim/phpdoc
+"set runtimepath+=$HOME/.vim/phpdoc
 
