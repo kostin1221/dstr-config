@@ -444,9 +444,42 @@ vnoremap <C-P> :call PhpDocRange()<CR>
 
 autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="$HOME/.vim/external/phpmanual.sh"
 
-setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
+"setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
 setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
-setlocal dictionary+=$HOME/.vim/phpdic/phpproto
+"setlocal dictionary+=$HOME/.vim/phpdic/phpproto
 
 "set runtimepath+=$HOME/.vim/phpdoc
+
+map <C-Q> <Esc>:qa<cr>
+
+
+" Автозавершение слов по tab =)
+function InsertTabWrapper()
+ let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+   return "\<tab>"
+	else
+ return "\<c-p>"
+  endif
+  endfunction
+  imap <tab> <c-r>=InsertTabWrapper()<cr>
+
+
+" Слова откуда будем завершать
+ set complete=""
+"Из текущего буфера
+set complete+=.
+" Из словаря
+set complete+=k
+" Из других открытых буферов
+set complete+=b
+" из тегов 
+set complete+=t
+
+" Включаем filetype плугин. Настройки, специфичные для определынных файлов
+"мы разнесём по разным местам
+filetype plugin on
+au BufRead,BufNewFile *.phps set filetype=php
+au BufRead,BufNewFile *.thtml set filetype=php
+
 
