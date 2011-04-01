@@ -1,10 +1,22 @@
 "let rdark_current_line = 1
 
-"let colorscheme=rdark
+set hidden " не выгружать буфер когда переключаешься на другой
+
+colorscheme rdark
 set backup
 set backupdir=$HOME/.vim/backups
 set directory=$HOME/.vim/temp
 
+" перечитка конфига авто
+autocmd! bufwritepost $MYVIMRC source $MYVIMRC
+autocmd! bufreadpost * call LastPosition()
+	function! LastPosition()
+		if line("'\"") &amp;amp;&amp;amp; line("'\"")<=line('$')
+			normal! `"
+		endif
+	endfunction
+
+set browsedir=current
 " Просмотр буферов
 map <F2> ,be
 map <S-F2> ,bs
@@ -79,7 +91,7 @@ set mouse=a
 set mousemodel=popup
 
 " Фолдинг по отсупам
-set foldmethod=indent
+set foldcolumn=3 " показать полосу для управления сворачивание
 
 " Поиск по набору текста (очень полезная функция)
 set incsearch
@@ -372,7 +384,7 @@ imap <C-N>x <esc>:NERDTreeClose<cr>i
 nmap tt :tabnew<CR>
 
 " Включаем фолдинг для блоков классов/функций
-" let php_folding = 1
+ let php_folding = 1
 
 " Не использовать короткие теги PHP для поиска PHP блоков
 let php_noShortTags = 1
