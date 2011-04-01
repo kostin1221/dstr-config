@@ -1,6 +1,6 @@
 "let rdark_current_line = 1
 
-let colorscheme=rdark
+"let colorscheme=rdark
 set backup
 set backupdir=$HOME/.vim/backups
 set directory=$HOME/.vim/temp
@@ -438,4 +438,15 @@ inoremap <div <div<esc>maa></div><esc>`aa
 abb <a <a<space>href="<esc>maa"></a><esc>`aa
 
 
+inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
+nnoremap <C-P> :call PhpDocSingle()<CR>
+vnoremap <C-P> :call PhpDocRange()<CR> 
+
+autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="help"
+
+setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
+setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
+setlocal dictionary+=$HOME/.vim/phpdic/phpproto
+
+set runtimepath+=$HOME/.vim/phpdoc
 
