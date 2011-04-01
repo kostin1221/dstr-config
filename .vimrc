@@ -1,16 +1,51 @@
+"let rdark_current_line = 1
+
+let colorscheme=rdark
+set backup
+set backupdir=$HOME/.vim/backups
+set directory=$HOME/.vim/temp
+
 " Просмотр буферов
 map <F2> ,be
 map <S-F2> ,bs
 "NERDTree
 map <F3> :NERDTreeToggle<cr>
-" Открыть project
-""map <F5> :Tl<cr>
-nmap <silent> <F4> <Plug>ToggleProject
 
-" F11 - показать окно Taglist
 map <F5> :TlistToggle<cr>
 vmap <F5> <esc>:TlistToggle<cr>
 imap <F5> <esc>:TlistToggle<cr>
+
+nnoremap <silent> <F11> :YRShow<CR> 
+" F6 - предыдущий буфер
+map <F6> :bp<cr>
+vmap <F6> <esc>:bp<cr>i
+imap <F6> <esc>:bp<cr>i
+
+" F7 - следующий буфер
+map <F7> :bn<cr>
+vmap <F7> <esc>:bn<cr>i
+imap <F7> <esc>:bn<cr>i
+
+" F8 - список закладок
+map <F8> :MarksBrowser<cr>
+vmap <F8> <esc>:MarksBrowser<cr>
+imap <F8> <esc>:MarksBrowser<cr>
+
+" F9 - "make" команда
+map <F9> :make<cr>
+vmap <F9> <esc>:make<cr>i
+imap <F9> <esc>:make<cr>i
+
+" F10 - удалить буфер
+map <F10> :bd<cr>
+vmap <F10> <esc>:bd<cr>
+imap <F10> <esc>:bd<cr>
+
+" F12 - обозреватель файлов
+map <F12> :Ex<cr>
+vmap <F12> <esc>:Ex<cr>i
+imap <F12> <esc>:Ex<cr>i
+
 
 :set clipboard=unnamed,exclude:cons\\\|linux
 
@@ -300,9 +335,6 @@ set fileencodings=utf-8,cp1251,koi8-r
 
 
 
-nmap <F7> byei<<ESC>ea></<C-R>0><ESC>
-
-
 " Пробел в нормальном режиме перелистывает страницы
 nmap <Space> <PageDown>
 
@@ -323,36 +355,6 @@ imap <C-y> <esc>ddi
 " Поиск и замена слова под курсором
 nmap ; :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
-" F6 - предыдущий буфер
-map <F6> :bp<cr>
-vmap <F6> <esc>:bp<cr>i
-imap <F6> <esc>:bp<cr>i
-
-" F7 - следующий буфер
-map <F7> :bn<cr>
-vmap <F7> <esc>:bn<cr>i
-imap <F7> <esc>:bn<cr>i
-
-" F8 - список закладок
-map <F8> :MarksBrowser<cr>
-vmap <F8> <esc>:MarksBrowser<cr>
-imap <F8> <esc>:MarksBrowser<cr>
-
-" F9 - "make" команда
-map <F9> :make<cr>
-vmap <F9> <esc>:make<cr>i
-imap <F9> <esc>:make<cr>i
-
-" F10 - удалить буфер
-map <F10> :bd<cr>
-vmap <F10> <esc>:bd<cr>
-imap <F10> <esc>:bd<cr>
-
-" F12 - обозреватель файлов
-map <F12> :Ex<cr>
-vmap <F12> <esc>:Ex<cr>i
-imap <F12> <esc>:Ex<cr>i
-
 " Выключаем ненавистный режим замены
 imap >Ins> <Esc>i
 
@@ -370,7 +372,7 @@ imap <C-N>x <esc>:NERDTreeClose<cr>i
 nmap tt :tabnew<CR>
 
 " Включаем фолдинг для блоков классов/функций
-let php_folding = 1
+" let php_folding = 1
 
 " Не использовать короткие теги PHP для поиска PHP блоков
 let php_noShortTags = 1
@@ -383,3 +385,57 @@ let php_htmlInStrings=1
 
 " Подстветка базовых функций PHP
 let php_baselib = 1
+
+nnoremap <leader>v V`]
+
+nnoremap <leader>w <C-w>v<C-w>l
+
+nmap  <leader>s :make<cr>
+vmap <leader>s <esc>:make<cr>i
+imap <leader>s <esc>:make<cr>i
+
+
+"Так как мы включили autoindent, то вставка текста с отступами (из буфера обмена X Window или screen) будет «глючить» — отсупы будут «съезжать». К счастью, это легко исправить — нажав Ctrl+U сразу после вставки.
+inoremap <silent> <C-u> <ESC>u:set paste<CR>.:set nopaste<CR>gi
+
+"Надоело набирать chmod +x script.sh после создания нового скрипта? Пусть этим займётся Vim — все файлы, начинающиеся с !#/bin/sh или чего-то подобного автоматически будут сделаны исполняемыми:
+
+function ModeChange()
+  if getline(1) =~ "^#!"
+    if getline(1) =~ "/bin/"
+      silent !chmod a+x <afile>
+    endif
+  endif
+endfunction
+au BufWritePost * call ModeChange()
+
+map <S-tab> :tabprevious<cr>
+nmap <S-tab> :tabprevious<cr>
+imap <S-tab> <ESC>:tabprevious<cr>i
+map <C-tab> :tabnext<cr>
+nmap <C-tab> :tabnext<cr>
+imap <C-tab> <ESC>:tabnext<cr>i
+nmap <C-t> :tabnew<cr>
+imap <C-t> <ESC>:tabnew<cr>
+
+abb func_ function <Esc>mai() {<CR><CR>}<Esc>`ai
+abb if_ if( <Esc>mai ) {<CR><CR>}<Esc>`ai
+abb for_ for( <Esc>mai; ; ) {<CR><CR>}<Esc>`ai
+abb foreach_ foreach( <Esc>mai as $key=>$value ) {<CR><CR>}<Esc>`ai
+abb while_ while( <Esc>mai ) {<CR><CR>}<Esc>`ai
+abb class_ class <Esc>mai {<CR><CR>}<Esc>`ai
+abb ifelse_ if( <Esc>mai ) {<CR><CR>} else {<CR><CR>}<Esc>`ai
+abb <? <?php <Esc>mai ?><Esc>`ai
+
+inoremap <h1> <h1><esc>maa</h1><esc>`aa
+inoremap <h2> <h2><esc>maa</h2><esc>`aa
+inoremap <h3> <h3><esc>maa</h3><esc>`aa
+inoremap <ul> <ul><cr><tab><li><esc>maa</li><cr><backspace></ul><esc>`aa
+inoremap <ol> <ol><cr><tab><li><esc>maa</li><cr><backspace></ol><esc>`aa
+inoremap <li> <li><esc>maa</li><esc>`aa
+inoremap <p> <p><esc>maa</p><esc>`aa
+inoremap <div <div<esc>maa></div><esc>`aa
+abb <a <a<space>href="<esc>maa"></a><esc>`aa
+
+
+
