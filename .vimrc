@@ -481,5 +481,8 @@ set complete+=t
 filetype plugin on
 au BufRead,BufNewFile *.phps set filetype=php
 au BufRead,BufNewFile *.thtml set filetype=php
-
+au BufRead,BufNewFile *.tpl set filetype=smarty 
+au Filetype smarty exec('set dictionary=/home/dimon/.vim/syntax/smarty.vim')
+au Filetype smarty set complete+=k 
+imap <S-Space><S-Space> <C-X><C-K> 
 
