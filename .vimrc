@@ -1,3 +1,11 @@
+set foldmethod=manual
+"set nofoldenable
+" set foldmarker={,}
+
+set cursorline " highlight current line
+
+set autochdir " always switch to the current file directory 
+
 "let rdark_current_line = 1
 
 "let colorscheme=rdark
@@ -78,9 +86,6 @@ set t_vb=
 set mouse=a
 set mousemodel=popup
 
-" Фолдинг по отсупам
-set foldmethod=indent
-
 " Поиск по набору текста (очень полезная функция)
 set incsearch
 
@@ -91,6 +96,10 @@ set nohlsearch
 set nocompatible
 
 set wildmenu
+set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,
+                     \*.jpg,*.gif,*.png
+set wildmode=list:longest " turn on wild mode huge list
+
 
 " run file with PHP CLI (CTRL-M)
 :autocmd FileType php noremap <C-M> :w!<CR>:!/usr/bin/php %<CR>
@@ -333,17 +342,12 @@ set fileencodings=utf-8,cp1251,koi8-r
     endfunction
 " <--
 
-
-
-" Пробел в нормальном режиме перелистывает страницы
-nmap <Space> <PageDown>
-
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
 
-" C-c and C-v - Copy/Paste в "глобальный клипборд"
-vmap <C-C> "+yi
-imap <C-V> <esc>"+gPi
+" c-C AND C-v - Copy/Paste в "глобальный клипборд"
+"vmap <C-C> "+yi
+"imap <C-V> <esc>"+gPi
 
 " Заставляем shift-insert работать как в Xterm
 map <S-Insert> <MiddleMouse>
@@ -372,7 +376,7 @@ imap <C-N>x <esc>:NERDTreeClose<cr>i
 nmap tt :tabnew<CR>
 
 " Включаем фолдинг для блоков классов/функций
-" let php_folding = 1
+ let php_folding = 1
 
 " Не использовать короткие теги PHP для поиска PHP блоков
 let php_noShortTags = 1
