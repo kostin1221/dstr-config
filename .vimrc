@@ -1,3 +1,11 @@
+set foldmethod=manual
+"set nofoldenable
+" set foldmarker={,}
+
+set cursorline " highlight current line
+
+set autochdir " always switch to the current file directory 
+
 "let rdark_current_line = 1
 
 set hidden " не выгружать буфер когда переключаешься на другой
@@ -9,12 +17,9 @@ set directory=$HOME/.vim/temp
 
 " перечитка конфига авто
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
-autocmd! bufreadpost * call LastPosition()
-	function! LastPosition()
-		if line("'\"") &amp;amp;&amp;amp; line("'\"")<=line('$')
-			normal! `"
-		endif
-	endfunction
+set viewoptions=cursor,folds
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
 
 set browsedir=current
 " Просмотр буферов
@@ -90,9 +95,6 @@ set t_vb=
 set mouse=a
 set mousemodel=popup
 
-" Фолдинг по отсупам
-set foldcolumn=3 " показать полосу для управления сворачивание
-
 " Поиск по набору текста (очень полезная функция)
 set incsearch
 
@@ -103,6 +105,10 @@ set nohlsearch
 set nocompatible
 
 set wildmenu
+set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,
+                     \*.jpg,*.gif,*.png
+set wildmode=list:longest " turn on wild mode huge list
+
 
 " run file with PHP CLI (CTRL-M)
 :autocmd FileType php noremap <C-M> :w!<CR>:!/usr/bin/php %<CR>
@@ -345,17 +351,12 @@ set fileencodings=utf-8,cp1251,koi8-r
     endfunction
 " <--
 
-
-
-" Пробел в нормальном режиме перелистывает страницы
-nmap <Space> <PageDown>
-
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
 
-" C-c and C-v - Copy/Paste в "глобальный клипборд"
-vmap <C-C> "+yi
-imap <C-V> <esc>"+gPi
+" c-C AND C-v - Copy/Paste в "глобальный клипборд"
+"vmap <C-C> "+yi
+"imap <C-V> <esc>"+gPi
 
 " Заставляем shift-insert работать как в Xterm
 map <S-Insert> <MiddleMouse>
@@ -493,5 +494,8 @@ set complete+=t
 filetype plugin on
 au BufRead,BufNewFile *.phps set filetype=php
 au BufRead,BufNewFile *.thtml set filetype=php
-
+au BufRead,BufNewFile *.tpl set filetype=smarty 
+au Filetype smarty exec('set dictionary=/home/dimon/.vim/syntax/smarty.vim')
+au Filetype smarty set complete+=k 
+imap <S-Space><S-Space> <C-X><C-K> 
 
