@@ -41,6 +41,8 @@ delightful_config = {
     },
 }
 
+config.logs_quiet = nil
+config.logs_interval = 1
 -- Prepare the container that is used when constructing the wibox
 local delightful_container = { widgets = {}, icons = {} }
 if install_delightful then
