@@ -20,7 +20,7 @@ install_delightful = {
 		    delightful.widgets.network,
 		    delightful.widgets.cpu,
 		    delightful.widgets.memory,
-		    delightful.widgets.weather,
+--		    delightful.widgets.weather,
 --		    delightful.widgets.battery,
 --		    delightful.widgets.pulseaudio,
 --		    delightful.widgets.datetime
@@ -33,12 +33,12 @@ delightful_config = {
     [delightful.widgets.memory] = {
         command = 'gnome-system-monitor',
     },
-    [delightful.widgets.weather] = {
-        {
-			station_code = 'ULLI',
-            command = 'gnome-www-browser http://pogoda.yandex.ru',
-        },
-    },
+    --[delightful.widgets.weather] = {
+        --{
+			--station_code = 'ULLI',
+            --command = 'gnome-www-browser http://pogoda.yandex.ru',
+        --},
+    --},
 }
 
 -- Prepare the container that is used when constructing the wibox
