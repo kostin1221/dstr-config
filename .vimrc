@@ -384,8 +384,6 @@ imap <C-N>x <esc>:NERDTreeClose<cr>i
 
 nmap tt :tabnew<CR>
 
-" Включаем фолдинг для блоков классов/функций
- let php_folding = 1
 
 " Не использовать короткие теги PHP для поиска PHP блоков
 let php_noShortTags = 1
@@ -499,3 +497,7 @@ au Filetype smarty exec('set dictionary=/home/dimon/.vim/syntax/smarty.vim')
 au Filetype smarty set complete+=k 
 imap <S-Space><S-Space> <C-X><C-K> 
 
+" Public Accessors
+map <leader>ag :s/\(\(\w\)\(\w\+\)\).*/public function get\u\2\3(){\r\treturn \$this->\1;\r}/<CR>
+" Public Setters
+map <leader>as :s/\(\(\w\)\(\w\+\)\).*/public function set\u\2\3(\$\1){\r\t\$this->\1 = \$\1;\r}/<CR>
