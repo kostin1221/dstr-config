@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Example configuration creating mount and umount entries in menu.
+  Icon entries are gtk.STOCKITEMS(http://www.pygtk.org/docs/pygtk/gtk-stock-items.html)
+  Available device properties are listed at UDisks documentation(http://hal.freedesktop.org/docs/udisks/Device.html)
+-->
+<traydevice>
+  <!-- 
+      A list of icons with conditions, when they should be displayed
+      first match is taken, when nothing matches, default_icon is used.
+  -->
+ <iconmap default_icon="gtk.STOCK_FLOPPY">
+    <icon icon="gtk.STOCK_HARDDISK">
+      <!-- 
+          Harddisk icon is used if property "DeviceIsPartition" is set to true.
+      -->
+      <displayed_if>
+        <match key="DeviceIsPartition" bool="true"/>
+      </displayed_if>
+      <!--
+        Tooltip text is created by simply echoing device property "IdUuid".
+      -->
+      <tooltip executable="/bin/echo"> 
+        <arg>-n</arg>
+        <ref>IdLabel</ref>
+      </tooltip>
+    </icon>
+    <icon icon="gtk.STOCK_CDROM">
+      <displayed_if>
+        <match key="DeviceIsOpticalDisc" bool="true"/>
+      </displayed_if>
+      <tooltip executable="/bin/echo"> 
+        <arg>-n</arg>
+        <ref>IdLabel</ref>
+      </tooltip>
+    </icon>
+  </iconmap>
+  <menuitem icon="gtk.STOCK_ADD" text="mount">
+    <command executable="/usr/bin/udisks">
+        <arg>--mount</arg>
+        <ref>DeviceFile</ref>
+    </command>
+    <!--
+      Allow clicking on "ADD" only if device is not mounted already
+      (if it's property "DeviceIsMounted" has value "false")
+    -->
+    <enabled_if>
+      <not><match key="DeviceIsMounted" bool="true"/></not>
+    </enabled_if>
+  </menuitem>
+  <menuitem icon="gtk.STOCK_REMOVE" text="umount">
+    <command executable="/usr/bin/udisks">
+        <arg>--unmount</arg>
+        <ref>DeviceFile</ref>
+    </command>
+    <enabled_if>
+      <match key="DeviceIsMounted" bool="true"/>
+    </enabled_if>
+  </menuitem>
+</traydevice>

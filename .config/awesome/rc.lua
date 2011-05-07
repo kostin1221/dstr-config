@@ -8,7 +8,7 @@ require("beautiful")
 require("naughty")
 require("vicious")
 require('calendar2')
-
+require("inotify")
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -40,6 +40,7 @@ delightful_config = {
         },
     },
 }
+
 -- Prepare the container that is used when constructing the wibox
 local delightful_container = { widgets = {}, icons = {} }
 if install_delightful then
@@ -429,6 +430,8 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
+	{ rule = { class = "Psi-plus" },
+	  properties = { tag = tags[1][2] } },
 	{ rule = { class = "psi" },
 	  properties = { tag = tags[1][2] } },
 	{ rule = { class = "Qutim" },
@@ -445,18 +448,24 @@ awful.rules.rules = {
 -- }}}
 
 -- {{{ Signals
+client.add_signal("new", function (c)
+
+	 if c.class == "psi" then
+		awful.client.setslave(c)
+	 end
+end)
+
+client.add_signal("tagged", function (c)
+
+	 if c.class == "psi" then
+		awful.client.setslave(c)
+	 end
+end)
 -- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
     -- awful.titlebar.add(c, { modkey = modkey })
 
-	 if c.class == "psi" and not c.name:find('Psi') then
-		awful.client.setslave(c)
-	 end
-				  
-	 if c.class == "Qutim" and not c.role:find("contactlist") then
-		      awful.client.setslave(c)
-	 end
 
 	-- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
@@ -477,8 +486,16 @@ client.add_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
+	 if c.class == "psi" then
+		awful.client.setslave(c)
+	 end
+				  
+	 if c.class == "Qutim" and not c.role:find("contactlist") then
+		      awful.client.setslave(c)
+	 end
 end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+

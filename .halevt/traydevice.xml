@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE halevt:Configuration [
+
+<!-- this entity corresponds with mountable devices, which have 
+ volume.policy.should_mount true or don't have 
+ volume.policy.should_mount false and are block devices hotpluggable or
+ removable.
+-->
+<!ENTITY MOUNTABLE "hal.block.device &amp; hal.block.is_volume = true &amp; (hal.volume.policy.should_mount = true | ((! hal.volume.policy.should_mount = false) &amp; (hal.block.storage_device.hal.storage.policy.should_mount = true | ((! hal.block.storage_device.hal.storage.policy.should_mount = false)  &amp; (hal.block.storage_device.hal.storage.hotpluggable = true | hal.block.storage_device.hal.storage.removable = true)))))">
+]>
+<halevt:Configuration version="0.1" xmlns:halevt="http://www.environnement.ens.fr/perso/dumas/halevt.html">
+
+<!--
+Remember to use &amp; and &quot; for & and " in xml attributes.
+
+In a match attribute, hal.* is special since it matches any device.
+In a match attribute property it is possible to refer to other
+device properties. For example 
+hal.block.storage_device.hal.storage.policy.should_mount
+refers to the storage.policy.should_mount property of the block.storage_device
+device associated with a given device.
+
+In an exec attribute, $hal.udi$ is special since it is replaced by
+the device udi. $hal.some.property$ is replaced by the value
+of the property some.property.
+!-->
+
+<!--
+Removable devices support
+!-->
+
+<!--
+This rule matches removable devices which have volume.policy.should_mount true
+or don't have volume.policy.should_mount false.
+
+Upon insertion, they are mounted, recorded by halevt-mount and the tray
+will have an icon ready for umounting. 
+!-->
+<halevt:Device match="&MOUNTABLE;">
+   <halevt:Insertion exec="halevt-mount -u $hal.udi$ &amp;&amp; alltray -stask -st -na halevt_umount_from_tray-gtkdialog.sh '&quot;$hal.block.device$&quot;' '&quot;$hal.volume.label$&quot;'"/>
+</halevt:Device>
+
+<!--
+When a device get a mount point, it is passed to halevt-mount which can 
+record it. The property that changes is volume.is_mounted, and the action is
+executed when the value of volume.is_mounted becomes true.
+!-->
+<halevt:Device match="hal.block.device &amp; hal.block.is_volume = true &amp; hal.volume.mount_point">
+   <halevt:Property name="hal.volume.is_mounted">
+      <halevt:Action value="true" exec="halevt-mount -s"/>
+   </halevt:Property>
+</halevt:Device>
+
+<!--
+When a device is unmounted, it is recorded by halevt-mount.
+!-->
+<halevt:Device match="hal.block.device &amp; hal.block.is_volume = true">
+    <halevt:Property name="hal.volume.is_mounted">
+        <halevt:Action value="false" exec="halevt-mount -s"/>
+    </halevt:Property>
+</halevt:Device>
+
+<!--
+When a device is removed, it is recorded by halevt-mount.
+Note that, normally the device should already be unmounted
+if the tray was used so that halevt-umount will give an error message 
+saying that it cannot find the device, which is normal.
+!-->
+<halevt:Device match="hal.block.device &amp; hal.block.is_volume = true">
+     <halevt:Removal exec="halevt-umount -u $hal.udi$; halevt-umount -s"/>
+</halevt:Device>
+
+</halevt:Configuration>
