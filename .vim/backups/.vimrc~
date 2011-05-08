@@ -2,7 +2,7 @@ set foldmethod=manual
 "set nofoldenable
 " set foldmarker={,}
 
-highlight CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+    highlight CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 
 set cursorline " highlight current line
 
