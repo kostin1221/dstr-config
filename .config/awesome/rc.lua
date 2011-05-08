@@ -59,6 +59,65 @@ end
 
 -- {{{ Variable definitions
 
+-- where can be 'left' 'right' 'center' nil
+function client_snap(c, where, geom)
+    local sg = screen[c.screen].geometry
+    local cg = geom or c:geometry()
+    local cs = c:struts()
+    cs['left'] = 0
+    cs['top'] = 0
+    cs['bottom'] = 0
+    cs['right'] = 0
+    if where == 'right' then
+        cg.x = sg.width - cg.width
+        cs[where] = cg.width
+        c:struts(cs)
+        c:geometry(cg)
+    elseif where == 'left' then
+        cg.x = 0
+        cs[where] = cg.width
+        c:struts(cs)
+        c:geometry(cg)
+    elseif where == 'bottom' then
+        awful.placement.centered(c)
+        cg = c:geometry()
+        cg.y = sg.height - cg.height - beautiful.wibox_bottom_height
+        cs[where] = cg.height + beautiful.wibox_bottom_height
+        c:struts(cs)
+        c:geometry(cg)
+    elseif where == nil then
+        c:struts(cs)
+        c:geometry(cg)
+    elseif where == 'center' then
+        c:struts(cs)
+        awful.placement.centered(c)
+    else
+        return
+    end
+end
+-- {{{ functions to help launch run commands in a terminal using ":" keyword 
+function check_for_terminal (command)
+   if command:sub(1,1) == ":" then
+      command = terminal .. ' -e ' .. command:sub(2)
+   end
+   awful.util.spawn(command)
+end
+   
+function clean_for_completion (command, cur_pos, ncomp, shell)
+   local term = false
+   if command:sub(1,1) == ":" then
+      term = true
+      command = command:sub(2)
+      cur_pos = cur_pos - 1
+   end
+   command, cur_pos =  awful.completion.shell(command, cur_pos,ncomp,shell)
+   if term == true then
+      command = ':' .. command
+      cur_pos = cur_pos + 1
+   end
+   return command, cur_pos
+end
+-- }}}
 --{{{ Debug
 function dbg(vars)
 local text = ""
@@ -336,11 +395,62 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey }, "a", function ()
+    awful.prompt.run({ prompt = "Calculate: " }, mypromptbox[mouse.screen].widget,
+        function (expr)
+		    local cal = awful.util.pread("/usr/bin/calc '" .. expr .. "'")
+            naughty.notify({ text = expr .. " = " ..  cal, timeout = 30 })
+        end)
+  end),
+ awful.key({ modkey,           }, "s", function ()
+        awful.prompt.run({ prompt = "ssh: " },
+        mypromptbox[mouse.screen].widget,
+        function(h)
+                awful.util.spawn(terminal .. " -e ssh " .. h)
+        end,
+        function(cmd, cur_pos, ncomp)
+                -- get the hosts
+                local hosts = {}
+                f = io.popen('cut -d " " -f1 ' .. os.getenv("HOME") ..  '/.ssh/known_hosts | cut -d, -f1')
+                for host in f:lines() do
+                        table.insert(hosts, host)
+                end
+                f:close()
+                -- abort completion under certain circumstances
+                if #cmd == 0 or (cur_pos ~= #cmd + 1 and cmd:sub(cur_pos, cur_pos) ~= " ") then
+                        return cmd, cur_pos
+                end
+                -- match
+                local matches = {}
+                table.foreach(hosts, function(x)
+                        if hosts[x]:find("^" .. cmd:sub(1,cur_pos)) then
+                                table.insert(matches, hosts[x])
+                        end
+                end)
+                -- if there are no matches
+                if #matches == 0 then
+                        return
+                end
+                -- cycle
+                while ncomp > #matches do
+                        ncomp = ncomp - #matches
+                end
+                -- return match and position
+                return matches[ncomp], cur_pos
+        end,
+        awful.util.getdir("cache") .. "/ssh_history")
+end),   
 
-    awful.key({ modkey }, "x",
+   -- awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+   awful.key({ modkey,           }, "r", 
+              function () awful.prompt.run({prompt="Старт:"},
+                                           mypromptbox[mouse.screen].widget,
+                                           check_for_terminal,
+                                           clean_for_completion,
+                                           awful.util.getdir("cache") .. "/history") end), 
+   awful.key({ modkey }, "x",
               function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
+                  awful.prompt.run({ prompt = "Запустить ЛУА код: " },
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
@@ -467,6 +577,16 @@ client.add_signal("manage", function (c, startup)
         end
     end)
 
+	 selectedTagName = awful.tag.selected(1).name
+	 if c.instance == "urxvt" and not selectedTagName:find("main")	then
+        awful.client.floating.set(c, true)
+--		awful.placement.under_mouse (c)
+--		awful.placement.no_offscreen (c)
+	 end
+	 if c.instance == "evince" and selectedTagName:find("main")	then
+        awful.client.floating.set(c, true)
+	 end
+
     if not startup then
         -- Set the windows at the slave,
         -- i.e. put it at the end of others instead of setting it master.
@@ -484,12 +604,6 @@ client.add_signal("manage", function (c, startup)
 				  
 	 if c.class == "Qutim" and not c.role:find("contactlist") then
 		awful.client.setslave(c)
-	 end
-
-	 selectedTagName = awful.tag.selected(1).name
-	 if c.instance == "urxvt" and not selectedTagName:find("main")	then
-        awful.client.floating.set(c, true)
-		c:geometry({x=1000, y=500})
 	 end
 			   			
 end)
