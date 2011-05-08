@@ -2,8 +2,6 @@ set foldmethod=manual
 "set nofoldenable
 " set foldmarker={,}
 
-highlight CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-
 set cursorline " highlight current line
 
 set autochdir " always switch to the current file directory 
@@ -12,7 +10,6 @@ set autochdir " always switch to the current file directory
 
 set hidden " не выгружать буфер когда переключаешься на другой
 
-colorscheme vibrantink
 set backup
 set backupdir=$HOME/.vim/backups
 set directory=$HOME/.vim/temp
@@ -503,5 +500,7 @@ imap <S-Space><S-Space> <C-X><C-K>
 let g:snippetsEmu_key = "<S-Tab>"
 
 
+colorscheme vibrantink
+colors vibrantink
 
 

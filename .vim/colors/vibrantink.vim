@@ -64,5 +64,5 @@ else
     highlight Statement ctermfg=202
     highlight String ctermfg=82 
     highlight Search ctermbg=White 
-    highlight CursorLine cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+    highlight CursorLine cterm=NONE ctermbg=235
 endif
