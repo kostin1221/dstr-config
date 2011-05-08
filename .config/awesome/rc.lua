@@ -121,21 +121,21 @@ layouts =
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 
-
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "1-term", "2-im", "3-web", "4-dev", 5, 6, "7-VB", '8-audio', '9-VoIP' }, s, layouts[1])
+    tags[s] = awful.tag({ "main", "im", "web", "dev", 5, "study", "VB", "AV", "VoIP" }, s, layouts[1])
 end
 
+-- IM Tag sessings:
 awful.tag.setmwfact(0.2, tags[1][2])
 awful.tag.setproperty(tags[1][2], 'layout', awful.layout.suit.tile)
 awful.tag.setncol(2, tags[1][2])
 awful.tag.setnmaster (1, tags[1][2])
 
 
-awful.tag.setproperty(tags[1][1], 'layout', layouts[3])
-awful.tag.setproperty(tags[1][3], 'layout', layouts[2])
+awful.tag.setproperty(tags[1][1], 'layout', layouts[2])       -- MAIN tile
+awful.tag.setproperty(tags[1][3], 'layout', layouts[4])       -- WEB MAX
 -- }}}
 
 -- {{{ Menu
@@ -430,9 +430,9 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-	{ rule = { class = "Psi-plus" },
+	{ rule = { instance = "psi-plus" },
 	  properties = { tag = tags[1][2] } },
-	{ rule = { class = "psi" },
+	{ rule = { instance = "psi" },
 	  properties = { tag = tags[1][2] } },
 	{ rule = { class = "Qutim" },
 	    properties = { tag = tags[1][2] } },
@@ -440,32 +440,24 @@ awful.rules.rules = {
      properties = { tag = tags[1][3] } },
     { rule = { class = "Skype" },
      properties = { tag = tags[1][9] } },
+	 -- Multimedia to AV tag --------
     { rule = { class = "Deadbeef" },
-     properties = { tag = tags[1][8] } },
+     properties = { tag = tags[1][8], floating = true } },
+    { rule = { instance = "smplayer" },
+     properties = { tag = tags[1][8], switchtotag = true, floating = true } },
+    { rule = { instance = "vlc" },
+     properties = { tag = tags[1][8], switchtotag = true, floating = true } },
+	 -------------------------------
     { rule = { class = "VirtualBox" },
-     properties = { tag = tags[1][7] } },
+     properties = { tag = tags[1][7], floating = true } },
 }
 -- }}}
 
 -- {{{ Signals
-client.add_signal("new", function (c)
-
-	 if c.class == "psi" then
-		awful.client.setslave(c)
-	 end
-end)
-
-client.add_signal("tagged", function (c)
-
-	 if c.class == "psi" then
-		awful.client.setslave(c)
-	 end
-end)
 -- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
     -- awful.titlebar.add(c, { modkey = modkey })
-
 
 	-- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
@@ -486,13 +478,20 @@ client.add_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
-	 if c.class == "psi" then
+	 if not ( c.instance == "psi" or c.instance == "psi-plus" ) and c.class == "psi" then
 		awful.client.setslave(c)
 	 end
 				  
 	 if c.class == "Qutim" and not c.role:find("contactlist") then
-		      awful.client.setslave(c)
+		awful.client.setslave(c)
 	 end
+
+	 selectedTagName = awful.tag.selected(1).name
+	 if c.instance == "urxvt" and not selectedTagName:find("main")	then
+        awful.client.floating.set(c, true)
+		c:geometry({x=1000, y=500})
+	 end
+			   			
 end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
