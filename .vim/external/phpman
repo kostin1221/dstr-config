@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+if (!isset($_SERVER["argv"][1])) {
+ fwrite(STDERR, "No keyword given\n");
+ exit(1);
+}
+
+$xmlstring = @file_get_contents("http://php.net/" . urlencode($_SERVER["argv"][1]));
+if ($xmlstring === false) {
+ fwrite(STDERR, "Failed to fetch doc page\n");
+ exit(2);
+}
+
+// remove default namespace
+$xmlstring = preg_replace('%\bxmlns="[^"]*"%', "", $xmlstring);
+
+$xml = @simplexml_load_string($xmlstring);
+if ($xml === false) {
+ fwrite(STDERR, "Failed to parse doc page\n");
+ exit(3);
+}
+
+// get content div
+$content = array_pop($xml->xpath("//div[@id='content']"));
+
+if (is_null($content)) {
+ fwrite(STDERR, "Couldn't find div with ID 'content'\n");
+ exit(4);
+}
+
+// remove nav bars
+foreach ($content->xpath("./div") as $nav)
+ if (in_array("manualnavbar", explode(" ", $nav["class"])))
+  simplexml_remove_node($nav);
+
+// get new XML
+$newxml = $content->asXML();
+
+// run lynx
+$lynx = proc_open("lynx -dump -stdin", array(array("pipe", "r"), array("pipe", "w"), array("pipe", "w")), $pipes);
+if (!is_resource($lynx)) {
+ fwrite(STDERR, "Couldn't run lynx\n");
+ exit(5);
+}
+
+// poke new XML to lynx's stdin
+fwrite($pipes[0], $newxml);
+fclose($pipes[0]);
+
+// get lynx's stdout
+echo stream_get_contents($pipes[1]);
+fclose($pipes[1]);
+$erroroutput = stream_get_contents($pipes[2]);
+fclose($pipes[2]);
+
+// close lynx
+$returnval = proc_close($lynx);
+
+// check return value
+if ($returnval != 0) {
+ fwrite(STDERR, "lynx exited with code $returnval -- error output follows.\n$erroroutput");
+ exit(6);
+}
+
+exit(0);
+
+function simplexml_remove_node($node) {
+ $domnode = dom_import_simplexml($node);
+ $domnode->parentNode->removeChild($domnode);
+}
+
+?>

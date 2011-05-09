@@ -33,8 +33,8 @@ setlocal keywordprg=$HOME/.vim/external/phpmanual.sh
 "setlocal showmatch
 "setlocal shellpipe=>
 "let b:closetag_html_style=1
-"let php_sql_query="1"
-"let php_htmlInStrings="1"
+let php_sql_query="1"
+let php_htmlInStrings="1"
 "let php_folding="1"
 "syntax sync fromstart
 "setlocal dictionary+=$HOME/.vim/dictionaries/phpfunclist

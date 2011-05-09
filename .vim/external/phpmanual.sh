@@ -4,7 +4,7 @@
 
 # Update MANUAL_DIR to be the location of your php manual
 
-BROWSER="lynx"
+BROWSER="links"
 MANUAL_DIR=""${HOME}/.vim/manual/php/
 
 if [ "$#" -ne 1 ]; then

@@ -1,13 +1,9 @@
 set foldmethod=manual
-"set nofoldenable
+set nofoldenable
 " set foldmarker={,}
 
 set cursorline " highlight current line
-
 set autochdir " always switch to the current file directory 
-
-"let rdark_current_line = 1
-
 set hidden " не выгружать буфер когда переключаешься на другой
 
 set backup
@@ -115,6 +111,14 @@ set wildmode=list:longest " turn on wild mode huge list
 " PHP parser check (CTRL-L)
 :autocmd FileType php noremap <C-L> :!/usr/bin/php -l %<CR>
 
+" Подстветка SQL внутри PHP строк
+let php_sql_query=1
+
+" Подстветка HTML внутри PHP строк
+let php_htmlInStrings=1 
+
+" Подстветка базовых функций PHP
+let php_baselib = 1
 
 " Нумерация
 set nu 
@@ -217,75 +221,6 @@ set fileencodings=utf-8,cp1251,koi8-r
     imap <PageDown> <C-O><C-D><C-O><C-D>
 
 " Горячие клавиши <--
-
-" Задаем собственные функции для назначения имен заголовкам табов -->
-    function! MyTabLine()
-        let tabline = ''
-
-        " Формируем tabline для каждой вкладки -->
-            for i in range(tabpagenr('$'))
-                " Подсвечиваем заголовок выбранной в данный момент вкладки.
-                if i + 1 == tabpagenr()
-                    let tabline .= '%#TabLineSel#'
-                else
-                    let tabline .= '%#TabLine#'
-                endif
-
-                " Устанавливаем номер вкладки
-                let tabline .= '%' . (i + 1) . 'T'
-
-                " Получаем имя вкладки
-                let tabline .= ' %{MyTabLabel(' . (i + 1) . ')} |'
-            endfor
-        " Формируем tabline для каждой вкладки <--
-
-        " Заполняем лишнее пространство
-        let tabline .= '%#TabLineFill#%T'
-
-        " Выровненная по правому краю кнопка закрытия вкладки
-        if tabpagenr('$') > 1
-            let tabline .= '%=%#TabLine#%999XX'
-        endif
-
-        return tabline
-    endfunction
-
-    function! MyTabLabel(n)
-        let label = ''
-        let buflist = tabpagebuflist(a:n)
-
-        " Имя файла и номер вкладки -->
-            let label = substitute(bufname(buflist[tabpagewinnr(a:n) - 1]), '.*/', '', '')
-
-            if label == ''
-                let label = '[No Name]'
-            endif
-
-            let label .= ' (' . a:n . ')'
-        " Имя файла и номер вкладки <--
-
-        " Определяем, есть ли во вкладке хотя бы один
-        " модифицированный буфер.
-        " -->
-            for i in range(len(buflist))
-                if getbufvar(buflist[i], "&modified")
-                    let label = '[+] ' . label
-                    break
-                endif
-            endfor
-        " <--
-
-        return label
-    endfunction
-
-    function! MyGuiTabLabel()
-        return '%{MyTabLabel(' . tabpagenr() . ')}'
-    endfunction
-
-    set tabline=%!MyTabLine()
-    set guitablabel=%!MyGuiTabLabel()
-" Задаем собственные функции для назначения имен заголовкам табов <--
-
 
 " Переключение между заголовочными файлами и
 " файлами с исходным кодом.
@@ -452,13 +387,12 @@ inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
 vnoremap <C-P> :call PhpDocRange()<CR> 
 
-autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="$HOME/.vim/external/phpmanual.sh"
 
 "setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
 setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
 "setlocal dictionary+=$HOME/.vim/phpdic/phpproto
 
-"set runtimepath+=$HOME/.vim/phpdoc
+set runtimepath+=$HOME/.vim/phpdoc
 
 map <C-Q> <Esc>:qa<cr>
 
@@ -496,11 +430,22 @@ au Filetype smarty exec('set dictionary=/home/dimon/.vim/syntax/smarty.vim')
 au Filetype smarty set complete+=k 
 imap <S-Space><S-Space> <C-X><C-K> 
 
+autocmd BufNewFile,Bufread *.php,*.php3,*.php4 setlocal keywordprg="$HOME/.vim/external/phpmanual.sh"
+
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
 
 
 colorscheme vibrantink
 colors vibrantink
+
+function! OpenPhpFunction (keyword)
+ exe "12new"
+ exe "silent read !$HOME/.vim/external/phpman ".substitute(a:keyword, "_", "-", "g")
+ exe "set buftype=nofile bufhidden=delete filetype=php readonly"
+ exe "1"
+endfunction
+autocmd FileType php map <buffer> K :call OpenPhpFunction('<C-r><C-w>')<CR>
+
 
 
