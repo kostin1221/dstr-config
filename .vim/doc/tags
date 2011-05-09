@@ -30,6 +30,9 @@
 'NERDTreeWinPos'	NERD_tree.txt	/*'NERDTreeWinPos'*
 'NERDTreeWinSize'	NERD_tree.txt	/*'NERDTreeWinSize'*
 'NERDUsePlaceHolders'	NERD_commenter.txt	/*'NERDUsePlaceHolders'*
+'SessionMgr_AutoManage'	sessionmgr.txt	/*'SessionMgr_AutoManage'*
+'SessionMgr_DefaultName'	sessionmgr.txt	/*'SessionMgr_DefaultName'*
+'SessionMgr_Dir'	sessionmgr.txt	/*'SessionMgr_Dir'*
 'Tlist_Auto_Highlight_Tag'	taglist.txt	/*'Tlist_Auto_Highlight_Tag'*
 'Tlist_Auto_Open'	taglist.txt	/*'Tlist_Auto_Open'*
 'Tlist_Auto_Update'	taglist.txt	/*'Tlist_Auto_Update'*
@@ -67,6 +70,12 @@
 :NERDTreeFromBookmark	NERD_tree.txt	/*:NERDTreeFromBookmark*
 :NERDTreeMirror	NERD_tree.txt	/*:NERDTreeMirror*
 :NERDTreeToggle	NERD_tree.txt	/*:NERDTreeToggle*
+:SD	sessionmgr.txt	/*:SD*
+:SE	sessionmgr.txt	/*:SE*
+:SL	sessionmgr.txt	/*:SL*
+:SQ	sessionmgr.txt	/*:SQ*
+:SR	sessionmgr.txt	/*:SR*
+:SS	sessionmgr.txt	/*:SS*
 :TlistAddFiles	taglist.txt	/*:TlistAddFiles*
 :TlistAddFilesRecursive	taglist.txt	/*:TlistAddFilesRecursive*
 :TlistClose	taglist.txt	/*:TlistClose*
@@ -192,6 +201,7 @@ NERDTreeRender()	NERD_tree.txt	/*NERDTreeRender()*
 NERD_commenter.txt	NERD_commenter.txt	/*NERD_commenter.txt*
 NERD_tree.txt	NERD_tree.txt	/*NERD_tree.txt*
 ResetSnippets()	snipMate.txt	/*ResetSnippets()*
+SessionMgr.txt	sessionmgr.txt	/*SessionMgr.txt*
 Tlist_Get_Tag_Prototype_By_Line()	taglist.txt	/*Tlist_Get_Tag_Prototype_By_Line()*
 Tlist_Get_Tagname_By_Line()	taglist.txt	/*Tlist_Get_Tagname_By_Line()*
 Tlist_Set_App()	taglist.txt	/*Tlist_Set_App()*
@@ -247,6 +257,9 @@ paster-features	paster.txt	/*paster-features*
 paster-requirements	paster.txt	/*paster-requirements*
 paster-usage	paster.txt	/*paster-usage*
 paster.vim	paster.txt	/*paster.vim*
+sessionmgr-about	sessionmgr.txt	/*sessionmgr-about*
+sessionmgr-commands	sessionmgr.txt	/*sessionmgr-commands*
+sessionmgr-configure	sessionmgr.txt	/*sessionmgr-configure*
 snipMate	snipMate.txt	/*snipMate*
 snipMate-$#	snipMate.txt	/*snipMate-$#*
 snipMate-${#:}	snipMate.txt	/*snipMate-${#:}*
