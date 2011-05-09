@@ -32,7 +32,7 @@ setlocal keywordprg=$HOME/.vim/external/phpmanual.sh
 " Private part
 "setlocal showmatch
 "setlocal shellpipe=>
-"let b:closetag_html_style=1
+let b:closetag_html_style=1
 let php_sql_query="1"
 let php_htmlInStrings="1"
 "let php_folding="1"

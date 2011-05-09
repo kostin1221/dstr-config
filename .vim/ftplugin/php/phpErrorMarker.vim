@@ -27,7 +27,7 @@ if (!exists('phpErrorMarker#disable') || phpErrorMarker#disable <= 0) && !exists
 
 		command -buffer MarkPhpErrors call phpErrorMarker#markErrors()
 		command -buffer UnmarkPhpErrors call phpErrorMarker#unmarkErrors()
-		command -nargs=0 PhpErrorMarkerVimball call phpErrorMarker#makeVimball()
+"		command -nargs=0 PhpErrorMarkerVimball call phpErrorMarker#makeVimball()
 
 		let &cpo = s:cpo
 		unlet s:cpo

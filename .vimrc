@@ -8,13 +8,6 @@ set hidden " не выгружать буфер когда переключае�
 
 set backup
 set backupdir=$HOME/.vim/backups
-set directory=$HOME/.vim/temp
-
-" перечитка конфига авто
-autocmd! bufwritepost $MYVIMRC source $MYVIMRC
-set viewoptions=cursor,folds
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
 
 set browsedir=current
 " Просмотр буферов
@@ -111,15 +104,6 @@ set wildmode=list:longest " turn on wild mode huge list
 " PHP parser check (CTRL-L)
 :autocmd FileType php noremap <C-L> :!/usr/bin/php -l %<CR>
 
-" Подстветка SQL внутри PHP строк
-let php_sql_query=1
-
-" Подстветка HTML внутри PHP строк
-let php_htmlInStrings=1 
-
-" Подстветка базовых функций PHP
-let php_baselib = 1
-
 " Нумерация
 set nu 
 set langmap=ёйцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕHГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
@@ -206,10 +190,6 @@ set fileencodings=utf-8,cp1251,koi8-r
         cmap <C-K> <Right>
         cmap <C-L> <Del>
     " <--
-
-   " Стрелки для комментариев
-    map - $a --><Esc>
-    map = $a <--<Esc>
 
   " Более привычные Page Up/Down, когда курсор остаётся в той же строке,
     " а не переносится вверх/вниз экрана, как при стандартном PgUp/PgDown.
@@ -308,37 +288,17 @@ imap >Ins> <Esc>i
 " С-q - выход из Vim 
 map <C-Q> <Esc>:qa<cr>
 
-nmap <C-N>v :NERDTree<cr>
-vmap <C-N>v <esc>:NERDTree<cr>i
-imap <C-N>v <esc>:NERDTree<cr>i
-
-nmap <C-N>x :NERDTreeClose<cr>
-vmap <C-N>x <esc>:NERDTreeClose<cr>i
-imap <C-N>x <esc>:NERDTreeClose<cr>i
-
 nmap tt :tabnew<CR>
-
 
 " Не использовать короткие теги PHP для поиска PHP блоков
 let php_noShortTags = 1
 
-" Подстветка SQL внутри PHP строк
-let php_sql_query=1
-
-" Подстветка HTML внутри PHP строк
-let php_htmlInStrings=1 
-
-" Подстветка базовых функций PHP
-let php_baselib = 1
-
 nnoremap <leader>v V`]
-
 nnoremap <leader>w <C-w>v<C-w>l
 
 nmap  <leader>s :make<cr>
 vmap <leader>s <esc>:make<cr>i
 imap <leader>s <esc>:make<cr>i
-
 
 "Так как мы включили autoindent, то вставка текста с отступами (из буфера обмена X Window или screen) будет «глючить» — отсупы будут «съезжать». К счастью, это легко исправить — нажав Ctrl+U сразу после вставки.
 inoremap <silent> <C-u> <ESC>u:set paste<CR>.:set nopaste<CR>gi
@@ -352,7 +312,7 @@ function ModeChange()
     endif
   endif
 endfunction
-au BufWritePost * call ModeChange()
+"au BufWritePost * call ModeChange()
 
 map <S-tab> :tabprevious<cr>
 nmap <S-tab> :tabprevious<cr>
@@ -363,30 +323,9 @@ imap <C-tab> <ESC>:tabnext<cr>i
 nmap <C-t> :tabnew<cr>
 imap <C-t> <ESC>:tabnew<cr>
 
-abb func_ function <Esc>mai() {<CR><CR>}<Esc>`ai
-abb if_ if( <Esc>mai ) {<CR><CR>}<Esc>`ai
-abb for_ for( <Esc>mai; ; ) {<CR><CR>}<Esc>`ai
-abb foreach_ foreach( <Esc>mai as $key=>$value ) {<CR><CR>}<Esc>`ai
-abb while_ while( <Esc>mai ) {<CR><CR>}<Esc>`ai
-abb class_ class <Esc>mai {<CR><CR>}<Esc>`ai
-abb ifelse_ if( <Esc>mai ) {<CR><CR>} else {<CR><CR>}<Esc>`ai
-abb <? <?php <Esc>mai ?><Esc>`ai
-
-inoremap <h1> <h1><esc>maa</h1><esc>`aa
-inoremap <h2> <h2><esc>maa</h2><esc>`aa
-inoremap <h3> <h3><esc>maa</h3><esc>`aa
-inoremap <ul> <ul><cr><tab><li><esc>maa</li><cr><backspace></ul><esc>`aa
-inoremap <ol> <ol><cr><tab><li><esc>maa</li><cr><backspace></ol><esc>`aa
-inoremap <li> <li><esc>maa</li><esc>`aa
-inoremap <p> <p><esc>maa</p><esc>`aa
-inoremap <div <div<esc>maa></div><esc>`aa
-abb <a <a<space>href="<esc>maa"></a><esc>`aa
-
-
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
 vnoremap <C-P> :call PhpDocRange()<CR> 
-
 
 "setlocal dictionary+=$HOME/.vim/phpdic/phpfunclist
 setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
@@ -395,7 +334,6 @@ setlocal dictionary+=$HOME/.vim/phpdic/funclist.txt
 set runtimepath+=$HOME/.vim/phpdoc
 
 map <C-Q> <Esc>:qa<cr>
-
 
 " Автозавершение слов по tab =)
 function InsertTabWrapper()
@@ -407,7 +345,6 @@ function InsertTabWrapper()
   endif
   endfunction
   imap <tab> <c-r>=InsertTabWrapper()<cr>
-
 
 " Слова откуда будем завершать
  set complete=""
@@ -430,14 +367,10 @@ au Filetype smarty exec('set dictionary=/home/dimon/.vim/syntax/smarty.vim')
 au Filetype smarty set complete+=k 
 imap <S-Space><S-Space> <C-X><C-K> 
 
-autocmd BufNewFile,Bufread *.php,*.php3,*.php4 setlocal keywordprg="$HOME/.vim/external/phpmanual.sh"
-
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
 
-
 colorscheme vibrantink
-colors vibrantink
 
 function! OpenPhpFunction (keyword)
  exe "12new"
