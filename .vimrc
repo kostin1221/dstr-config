@@ -159,11 +159,6 @@ set dir=~/.vim/swp
 " Список кодировок файлов для автоопределения
 set fileencodings=utf-8,cp1251,koi8-r
 
-" Настраиваем переключение раскладок клавиатуры по <C-^>
-"set keymap=russian-jcukenwin
-" Раскладка по умолчанию - английская
-"set iminsert=0
-
 " Просмотр нетекстовых файлов в Vim -->
     au BufReadPost *.pdf silent %!pdftotext -nopgbrk "%" - |fmt -csw78
     au BufReadPost *.doc silent %!antiword "%"
@@ -357,7 +352,20 @@ set complete+=b
 " из тегов 
 set complete+=t
 
-" Включаем filetype плугин. Настройки, специфичные для определынных файлов
+
+"taglist settings
+let Tlist_Compact_Format = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Exit_OnlyWindow = 0
+let Tlist_WinWidth = 35
+let tlist_php_settings = 'php;c:class;f:Functions'
+let Tlist_Use_Right_Window=1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Display_Tag_Scope = 1
+let Tlist_Process_File_Always = 1
+let Tlist_Show_One_File = 1 
+
+"Включаем filetype плугин. Настройки, специфичные для определынных файлов
 "мы разнесём по разным местам
 filetype plugin on
 au BufRead,BufNewFile *.phps set filetype=php
@@ -369,6 +377,7 @@ imap <S-Space><S-Space> <C-X><C-K>
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
+let g:snips_author = "Kostin Dmitrij"
 
 colorscheme vibrantink
 
