@@ -12,7 +12,7 @@ require("inotify")
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-require('delightful.widgets.weather')
+--require('delightful.widgets.weather')
 require('delightful.widgets.cpu')
 require('delightful.widgets.memory')
 require('delightful.widgets.network')
@@ -540,6 +540,8 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
+	{ rule = { class = "psi" },
+	  properties = { tag = tags[1][2] } },
 	{ rule = { instance = "psi-plus" },
 	  properties = { tag = tags[1][2] } },
 	{ rule = { instance = "psi" },
@@ -578,7 +580,7 @@ client.add_signal("manage", function (c, startup)
     end)
 
 	 selectedTagName = awful.tag.selected(1).name
-	 if c.instance == "urxvt" and not selectedTagName:find("main")	then
+	 if c.instance == "urxvt" and not (selectedTagName:find("dev") or selectedTagName:find("main"))	then
         awful.client.floating.set(c, true)
 --		awful.placement.under_mouse (c)
 --		awful.placement.no_offscreen (c)
@@ -598,7 +600,7 @@ client.add_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
-	 if not ( c.instance == "psi" or c.instance == "psi-plus" ) and c.class == "psi" then
+	 if not ( c.instance == "main" or c.instance == "psi" or c.instance == "psi-plus" ) and c.class == "psi" then
 		awful.client.setslave(c)
 	 end
 				  
