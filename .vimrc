@@ -389,5 +389,15 @@ function! OpenPhpFunction (keyword)
 endfunction
 autocmd FileType php map <buffer> K :call OpenPhpFunction('<C-r><C-w>')<CR>
 
-
+function! RunPhpcs()
+    let l:filename=@%
+    let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
+"    echo l:phpcs_output
+    let l:phpcs_list=split(l:phpcs_output, "\n")
+    unlet l:phpcs_list[0]
+    cexpr l:phpcs_list
+    cwindow
+endfunction
+set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
+command! phpcs execute RunPhpcs()
 
