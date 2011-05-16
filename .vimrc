@@ -401,12 +401,4 @@ endfunction
 set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
 command! phpcs execute RunPhpcs()
 
-if has("cscope")
-if filereadable("cscope.out")
-cs add cscope.out
-" else add database pointed to by environment
-elseif $CSCOPE_DB != ""
-cs add $CSCOPE_DB
-endif
-endif
 
