@@ -309,14 +309,14 @@ function ModeChange()
 endfunction
 "au BufWritePost * call ModeChange()
 
-map <S-tab> :tabprevious<cr>
-nmap <S-tab> :tabprevious<cr>
-imap <S-tab> <ESC>:tabprevious<cr>i
-map <C-tab> :tabnext<cr>
-nmap <C-tab> :tabnext<cr>
-imap <C-tab> <ESC>:tabnext<cr>i
-nmap <C-t> :tabnew<cr>
-imap <C-t> <ESC>:tabnew<cr>
+"map <S-tab> :tabprevious<cr>
+"nmap <S-tab> :tabprevious<cr>
+"imap <S-tab> <ESC>:tabprevious<cr>i
+"map <C-tab> :tabnext<cr>
+"nmap <C-tab> :tabnext<cr>
+"imap <C-tab> <ESC>:tabnext<cr>i
+"nmap <C-t> :tabnew<cr>
+"imap <C-t> <ESC>:tabnew<cr>
 
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
