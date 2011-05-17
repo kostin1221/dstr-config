@@ -2,6 +2,7 @@
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
+require("awful.util")
 -- Theme handling library
 require("beautiful")
 -- Notification library
@@ -12,6 +13,9 @@ require("inotify")
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+
+nodename = awful.util.pread('uname -n')
+
 --require('delightful.widgets.weather')
 require('delightful.widgets.cpu')
 require('delightful.widgets.memory')
@@ -25,6 +29,7 @@ install_delightful = {
 --		    delightful.widgets.pulseaudio,
 --		    delightful.widgets.datetime
 }
+
 delightful_config = {
     [delightful.widgets.cpu] = {
         command = 'gnome-system-monitor',
@@ -40,6 +45,12 @@ delightful_config = {
         --},
     --},
 }
+
+if nodename:find('netbook') then
+	require('delightful.widgets.battery')
+	install_delightful[4] = delightful.widgets.battery 
+	delightful_config[delightful.widgets.battery] = {battery = 'BAT0'}
+end
 
 -- Prepare the container that is used when constructing the wibox
 local delightful_container = { widgets = {}, icons = {} }

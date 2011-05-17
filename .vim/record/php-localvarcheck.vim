@@ -1,0 +1,1 @@
+{"installer_type":"text","generated_by":"Vimana-2.23","files":[{"checksum":"303e01767d8f1f15195cda5fddcbc684","file":"/home/dimon/.vim/ftplugin/php_localvarcheck.vim"}],"version":0.3,"package":"php-localvarcheck.vim"}

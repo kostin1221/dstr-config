@@ -13,4 +13,6 @@ HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 bindkey -e
+source .zshrc_my
+
 # End of lines configured by zsh-newuser-install
