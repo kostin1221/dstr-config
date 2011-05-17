@@ -1,0 +1,76 @@
+
+
+
+# Suffix aliases
+alias -s {pdf,djvu}="nohup evince"
+alias -s {php,phtml,html,c,h,tpl}=vim
+alias -s phtml=vim
+alias -s html=vim
+alias -s c=vim
+alias -s h=vim
+alias -s tpl=vim
+alias -s exe=wine
+alias -s {txt,log,utf8}=p
+alias -s {avi,mpeg,mpg,mov,m2v}="nohup smplayer"
+
+#GLOBAL ALIASES
+alias -g NUL="> /dev/null 2>&1"
+alias -g C='| wc -l'
+alias -g EH='|& head'
+alias -g EL='|& less'
+alias -g ELS='|& less -S'
+alias -g ETL='|& tail -20'
+alias -g ET='|& tail'
+alias -g S='| sort'
+alias -g TL='| tail -20'
+alias -g T='| tail'
+alias -g G='| grep -'
+alias -g ND='*(/om[1])' # newest directory
+alias -g NF='*(.om[1])' # newest file
+
+#Normal aliases
+alias d='df'
+alias df='df -PTh'
+alias du='du -hcal --max-depth=1'
+alias grep='grep --colour=auto'
+alias v='vim'
+alias x='clear'
+alias m='mc'
+alias mkdir='mkdir -p'
+alias free='free -m'
+alias mount='sudo mount'
+alias hibernate='sudo hibernate'
+alias umount='sudo umount'
+alias reswap='swapoff -a; swapon -a'
+alias cpu='ps -eo pcpu,pid,user,args | sort -rk 1 | head -11'
+alias s='yaourt -Ss'
+alias i='yaourt -S'
+
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#.git'
+# ignore case on copletion
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+
+# setup key accordingly
+[[ -n "${key[Home]}"    ]]  && bindkey  "${key[Home]}"    beginning-of-line
+[[ -n "${key[End]}"     ]]  && bindkey  "${key[End]}"     end-of-line
+[[ -n "${key[Delete]}"  ]]  && bindkey  "${key[Delete]}"  delete-char
+[[ -n "${key[Up]}"      ]]  && bindkey  "${key[Up]}"      history-beginning-search-backward
+[[ -n "${key[Down]}"    ]]  && bindkey  "${key[Down]}"    history-beginning-search-forward
+[[ -n "${key[Left]}"    ]]  && bindkey  "${key[Left]}"    backward-char
+[[ -n "${key[Right]}"   ]]  && bindkey  "${key[Right]}"   forward-char
+if [ -d "$HOME/bin" ]; then
+  export PATH=$HOME/bin:$PATH
+fi
+
+# Автодополнение ID процессов в виде меню:
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+
+
+
+

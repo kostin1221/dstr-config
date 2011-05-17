@@ -51,6 +51,7 @@ if nodename:find('netbook') then
 	install_delightful[4] = delightful.widgets.battery 
 	delightful_config[delightful.widgets.battery] = {battery = 'BAT0'}
 end
+
 -- Prepare the container that is used when constructing the wibox
 local delightful_container = { widgets = {}, icons = {} }
 if install_delightful then
