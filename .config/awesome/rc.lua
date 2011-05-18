@@ -190,11 +190,15 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
+deflayout = awful.layout.suit.floating
+if nodename:find('netbook') then
 
+	deflayout = awful.layout.suit.max
+end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "main", "im", "web", "dev", 5, "study", "VB", "AV", "VoIP" }, s, layouts[1])
+    tags[s] = awful.tag({ "main", "im", "web", "dev", 5, "study", "VB", "AV", "VoIP" }, s, deflayout)
 end
 
 -- IM Tag sessings:
