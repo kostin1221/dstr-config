@@ -350,6 +350,11 @@ taglist-todo	taglist.txt	/*taglist-todo*
 taglist-using	taglist.txt	/*taglist-using*
 taglist.txt	taglist.txt	/*taglist.txt*
 v_<C-Y>,	zencoding.txt	/*v_<C-Y>,*
+xml-plugin-callbacks	xml-plugin.txt	/*xml-plugin-callbacks*
+xml-plugin-html	xml-plugin.txt	/*xml-plugin-html*
+xml-plugin-mappings	xml-plugin.txt	/*xml-plugin-mappings*
+xml-plugin-settings	xml-plugin.txt	/*xml-plugin-settings*
+xml-plugin.txt	xml-plugin.txt	/*xml-plugin.txt*
 zencoding	zencoding.txt	/*zencoding*
 zencoding-balance-tag-inward	zencoding.txt	/*zencoding-balance-tag-inward*
 zencoding-balance-tag-outward	zencoding.txt	/*zencoding-balance-tag-outward*
