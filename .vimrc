@@ -12,6 +12,8 @@ set hidden " не выгружать буфер когда переключае�
 set backup
 set backupdir=$HOME/.vim/backups
 
+let NERDTreeShowHidden=1
+
 set browsedir=current
 " Просмотр буферов
 map <F2> ,be
@@ -64,7 +66,7 @@ let leader = ","
 filetype plugin on
 
 " allow to use backspace instead of "x"
-set backspace=indent,eol,start whichwrap+=<,>,[,]
+"set backspace=indent,eol,start whichwrap+=<,>,[,]
 
 " Fix <Enter> for comment
 set fo+=cr
@@ -281,7 +283,7 @@ imap <C-y> <esc>ddi
 nmap ; :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
 " Выключаем ненавистный режим замены
-imap >Ins> <Esc>i
+"imap >Ins> <Esc>i
 
 " С-q - выход из Vim 
 map <C-Q> <Esc>:qa<cr>
@@ -289,7 +291,7 @@ map <C-Q> <Esc>:qa<cr>
 nmap tt :tabnew<CR>
 
 " Не использовать короткие теги PHP для поиска PHP блоков
-let php_noShortTags = 1
+"let php_noShortTags = 1
 
 nnoremap <leader>v V`]
 nnoremap <leader>w <C-w>v<C-w>l
@@ -355,7 +357,6 @@ set complete+=b
 " из тегов 
 set complete+=t
 
-
 "taglist settings
 let Tlist_Compact_Format = 1
 let Tlist_Enable_Fold_Column = 0
@@ -402,6 +403,6 @@ function! RunPhpcs()
     cwindow
 endfunction
 set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
-command! phpcs execute RunPhpcs()
+command! Phpcs execute RunPhpcs()
 
 

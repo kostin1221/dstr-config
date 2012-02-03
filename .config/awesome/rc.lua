@@ -9,7 +9,7 @@ require("beautiful")
 require("naughty")
 require("vicious")
 require('calendar2')
-require("inotify")
+-- require("inotify")
 
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
@@ -17,34 +17,34 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 nodename = awful.util.pread('uname -n')
 
 --require('delightful.widgets.weather')
-require('delightful.widgets.cpu')
-require('delightful.widgets.memory')
-require('delightful.widgets.network')
-install_delightful = {
-		    delightful.widgets.network,
-		    delightful.widgets.cpu,
-		    delightful.widgets.memory,
---		    delightful.widgets.weather,
---		    delightful.widgets.battery,
---		    delightful.widgets.pulseaudio,
---		    delightful.widgets.datetime
-}
+--require('delightful.widgets.cpu')
+--require('delightful.widgets.memory')
+--require('delightful.widgets.network')
+--install_delightful = {
+			--delightful.widgets.network,
+			--delightful.widgets.cpu,
+			--delightful.widgets.memory,
+----		    delightful.widgets.weather,
+----		    delightful.widgets.battery,
+----		    delightful.widgets.pulseaudio,
+----		    delightful.widgets.datetime
+--}
 
-delightful_config = {
-    [delightful.widgets.cpu] = {
-        command = 'gnome-system-monitor',
-    },
-
-    [delightful.widgets.memory] = {
-        command = 'gnome-system-monitor',
-    },
-    --[delightful.widgets.weather] = {
-        --{
-			--station_code = 'ULLI',
-            --command = 'gnome-www-browser http://pogoda.yandex.ru',
-        --},
+--delightful_config = {
+    --[delightful.widgets.cpu] = {
+        --command = 'gnome-system-monitor',
     --},
-}
+
+    --[delightful.widgets.memory] = {
+        --command = 'gnome-system-monitor',
+    --},
+    ----[delightful.widgets.weather] = {
+        ----{
+			----station_code = 'ULLI',
+            ----command = 'gnome-www-browser http://pogoda.yandex.ru',
+        ----},
+    ----},
+--}
 
 if nodename:find('netbook') then
 	require('delightful.widgets.battery')
@@ -53,20 +53,20 @@ if nodename:find('netbook') then
 end
 
 -- Prepare the container that is used when constructing the wibox
-local delightful_container = { widgets = {}, icons = {} }
-if install_delightful then
-    for _, widget in pairs(awful.util.table.reverse(install_delightful)) do
-        local config = delightful_config and delightful_config[widget]
-        local widgets, icons = widget:load(config)
-        if widgets then
-            if not icons then
-                icons = {}
-            end
-            table.insert(delightful_container.widgets, awful.util.table.reverse(widgets))
-            table.insert(delightful_container.icons,   awful.util.table.reverse(icons))
-        end
-    end
-end
+--local delightful_container = { widgets = {}, icons = {} }
+--if install_delightful then
+    --for _, widget in pairs(awful.util.table.reverse(install_delightful)) do
+        --local config = delightful_config and delightful_config[widget]
+        --local widgets, icons = widget:load(config)
+        --if widgets then
+            --if not icons then
+                --icons = {}
+            --end
+            --table.insert(delightful_container.widgets, awful.util.table.reverse(widgets))
+            --table.insert(delightful_container.icons,   awful.util.table.reverse(icons))
+        --end
+    --end
+--end
 
 -- {{{ Variable definitions
 
@@ -159,7 +159,7 @@ end
 --}}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvtc"
+terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -198,14 +198,14 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "main", "im", "web", "dev", 5, "study", "VB", "AV", "VoIP" }, s, deflayout)
+    tags[s] = awful.tag({ "term", "dev", "inet", "im", 5, "study", "VB", "AV", "VoIP" }, s, deflayout)
 end
 
 -- IM Tag sessings:
-awful.tag.setmwfact(0.2, tags[1][2])
-awful.tag.setproperty(tags[1][2], 'layout', awful.layout.suit.tile)
-awful.tag.setncol(2, tags[1][2])
-awful.tag.setnmaster (1, tags[1][2])
+-- awful.tag.setmwfact(0.2, tags[1][2])
+-- awful.tag.setproperty(tags[1][2], 'layout', awful.layout.suit.tile)
+--awful.tag.setncol(2, tags[1][2])
+--awful.tag.setnmaster (1, tags[1][2])
 
 
 awful.tag.setproperty(tags[1][1], 'layout', layouts[2])       -- MAIN tile
@@ -556,13 +556,13 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
 	{ rule = { class = "psi" },
-	  properties = { tag = tags[1][2] } },
+	  properties = { tag = tags[1][4] } },
 	{ rule = { instance = "psi-plus" },
-	  properties = { tag = tags[1][2] } },
+	  properties = { tag = tags[1][4] } },
 	{ rule = { instance = "psi" },
-	  properties = { tag = tags[1][2] } },
+	  properties = { tag = tags[1][4] } },
 	{ rule = { class = "Qutim" },
-	    properties = { tag = tags[1][2] } },
+	    properties = { tag = tags[1][4] } },
     { rule = { class = "Firefox" },
      properties = { tag = tags[1][3] } },
     { rule = { class = "Skype" },
@@ -600,9 +600,9 @@ client.add_signal("manage", function (c, startup)
 --		awful.placement.under_mouse (c)
 --		awful.placement.no_offscreen (c)
 	 end
-	 if c.instance == "evince" and selectedTagName:find("main")	then
-        awful.client.floating.set(c, true)
-	 end
+	 --if c.instance == "evince" and selectedTagName:find("main")	then
+        --awful.client.floating.set(c, true)
+	 --end
 
     if not startup then
         -- Set the windows at the slave,
@@ -615,13 +615,13 @@ client.add_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
-	 if not ( c.instance == "main" or c.instance == "psi" or c.instance == "psi-plus" ) and c.class == "psi" then
-		awful.client.setslave(c)
-	 end
+	 --if not ( c.instance == "main" or c.instance == "psi" or c.instance == "psi-plus" ) and c.class == "psi" then
+		--awful.client.setslave(c)
+	 --end
 				  
-	 if c.class == "Qutim" and not c.role:find("contactlist") then
-		awful.client.setslave(c)
-	 end
+	 --if c.class == "Qutim" and not c.role:find("contactlist") then
+		--awful.client.setslave(c)
+	 --end
 			   			
 end)
 
